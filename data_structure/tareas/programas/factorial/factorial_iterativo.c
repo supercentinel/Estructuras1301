@@ -4,6 +4,11 @@ unsigned long long Factorial(int n)
 {
     unsigned long long factorial = n;
 
+    if(n == 0)
+    {
+        return 1;
+    }
+
     while (n != 1)
     {
         factorial = factorial * (n-1);
