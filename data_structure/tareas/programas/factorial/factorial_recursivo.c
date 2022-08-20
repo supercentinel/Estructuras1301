@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+//Complejidad O(2n-1)
 unsigned long long Factorial(int n)
 {
 

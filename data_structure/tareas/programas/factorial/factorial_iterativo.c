@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-
+//Complejidad O(n)
 unsigned long long Factorial(int n, int a)
 {
     if(n == 0 || n == 1)
