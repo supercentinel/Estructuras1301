@@ -4,7 +4,7 @@
 
 int main()
 {
-    int f, c,i = 0, j = 0, noCn[14];
+    int f, c,i = 0, j = 0, noCn[20];
     char noC[21];
     
     printf("Numero de cuenta: ");
