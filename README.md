@@ -1,3 +1,5 @@
 # Estructuras de datos
 ### Integrantes
-- Alan Cerón Chávez- Mould Orozco Jon Paul
+- Alan Cerón Chávez
+- Mould Orozco Jon Paul
+
