@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct
@@ -11,12 +12,17 @@ typedef struct
 
 int main()
 {
-    Arreglo a[20];
+    Arreglo *a;
     int n, i;
     float pE = 0, cG = 0;
 
-    printf("Numero de alumnos(No debe ser mayor a 20)>");
+    printf("Numero de alumnos>");
     scanf("%d", &n);
+
+    a = calloc(n, sizeof(Arreglo));
+
+    if(a == NULL)
+        return 1;
 
     for(i = 0; i < n; i++)
     {
@@ -53,7 +59,7 @@ int main()
     printf("Edad promedio: %.2f\n", pE);
     printf("Calificacion grupal: %.2f\n", cG);
     
-
+    free(a);
 
     return 0;
 }
