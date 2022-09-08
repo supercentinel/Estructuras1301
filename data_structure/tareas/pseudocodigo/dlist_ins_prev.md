@@ -10,3 +10,16 @@ Nuevo->next = Head
 Head->prev = Nuevo
 Nuevo->prev = NULL
 ```
+
+## Si el nodo no es la cabeza
+
+![]
+
+```
+New->next = Prev->next
+New->prev = Node->prev
+New->next = Node
+New->prev = Prev
+Prev->next = New
+Next->prev = New
+```
