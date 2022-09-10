@@ -1,6 +1,6 @@
 # Insertar nodo en el nodo previo
 
-## Si el nodo es la caebeza
+## Si el nodo es la cabeza
 
 ![diagramamaCabeza](../assets/DiagramaCabeza.png)
 
@@ -13,7 +13,7 @@ Nuevo->prev = NULL
 
 ## Si el nodo no es la cabeza
 
-![]
+![diagramaNoCabeza](../assets/dlist_inst_noHead.png)
 
 ```
 New->next = Prev->next
