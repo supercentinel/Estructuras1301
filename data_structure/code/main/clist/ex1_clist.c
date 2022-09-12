@@ -6,7 +6,7 @@
 static void print_clist(const CList *clist)
 {
     CListNode *node;
-    int *data, i;
+    int *data, i = 0;
 
     fprintf(stdout, "El tamano de la lista es: %d\n", clist_size(clist));
 
@@ -24,7 +24,7 @@ static void print_clist(const CList *clist)
         fprintf(stdout, "Lista Circular.node[%03d] = %03d, %p -> %p\n", i, *data, node, node->next);
         i++;
 
-        if(i > 2/*clist_size(clist)*/)
+        if(i > clist_size(clist)-1)
             break;
         else
             node = clist_next(node);
@@ -40,11 +40,39 @@ int main(int argc, char const *argv[])
 
     int *data, i;
 
+    //Lista Inicializada
     clist_init(&clist, free);
     printf("lista circular inicializada\n");
 
-    node = clist_head(&clist);
+    for (int i = 0; i < 10; i++)
+    {
+        if((data = (int *)malloc(sizeof(int))) == NULL)
+            return 1;
 
+       *data = i;
+       
+        if(i == 0) 
+        {
+            clist_ins_next(&clist, NULL, data);
+            node = clist_head(&clist);
+            continue;
+        }
+
+        print_clist(&clist);
+
+        node = clist_next(node);
+
+        clist_ins_next(&clist, node, data);
+
+    }
+
+    print_clist(&clist);
+
+    
+
+    /**/
+
+    /*
     data = (int *)malloc(sizeof(int));
 
     *data = 777;
@@ -55,30 +83,32 @@ int main(int argc, char const *argv[])
     node = clist_next(clist.head);
     clist_ins_next(&clist, node, data);
 
-    //node = clist_head(&clist);
+    node = clist_head(&clist);
 
     //clist_ins_next(&clist, node, data);
-
-    /*for (i = 10; i > 0; i--)
+    */
+    /*for (i = 0; i < 10; i++)
     {
         if((data = (int *)malloc(sizeof(int))) == NULL)
-        {
             return 1;
-        }
         
         *data = i;
 
-        if((clist_ins_next(&clist, node, data)) != 0)
-        {
+
+        printf("%d\n", *data);
+
+        if(clist_ins_next(&clist, NULL, data) != 0)
             return 1;
-        }
         
-        node = clist_head(&clist);
+        print_clist(&clist);
+
+        //if(i > 2) node = clist_next(node);
+
+
 
 
     }*/
     
-    print_clist(&clist);
 
     clist_destroy(&clist);
     
