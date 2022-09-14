@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
             continue;
         }
 
-        print_clist(&clist);
+        //print_clist(&clist);
 
         node = clist_next(node);
 
@@ -68,47 +68,25 @@ int main(int argc, char const *argv[])
 
     print_clist(&clist);
 
-    
-
-    /**/
-
-    /*
-    data = (int *)malloc(sizeof(int));
-
-    *data = 777;
-
-    //clist_ins_next(&clist, NULL, data);
-    //node = clist_head(&clist);
-    clist_ins_next(&clist, clist.head, data);
-    node = clist_next(clist.head);
-    clist_ins_next(&clist, node, data);
-
+    //Removiendo cabeza de la lista
     node = clist_head(&clist);
 
-    //clist_ins_next(&clist, node, data);
-    */
-    /*for (i = 0; i < 10; i++)
+    data = clist_data(node);
+
+    fprintf(stdout, "Removiendo cabeza de la lista:\nCabeza[0] = %d, %p -> %p\n", *data, node, node->next);
+
+    for (i = 0; i < clist_size(&clist) - 1; i++)
     {
-        if((data = (int *)malloc(sizeof(int))) == NULL)
-            return 1;
-        
-        *data = i;
+        node = clist_next(node);
+    }
 
+    clist_rem_next(&clist, node, (void**)data);
 
-        printf("%d\n", *data);
-
-        if(clist_ins_next(&clist, NULL, data) != 0)
-            return 1;
-        
-        print_clist(&clist);
-
-        //if(i > 2) node = clist_next(node);
-
-
-
-
-    }*/
+    print_clist(&clist);
     
+
+
+
 
     clist_destroy(&clist);
     
