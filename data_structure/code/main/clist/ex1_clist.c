@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     CListNode *node;
 
     char *nc, *nc2;
-    int *data, i;
+    int *data, i, s = 0;
 
     if(argc < 3) return 1;
 
@@ -59,14 +59,14 @@ int main(int argc, char *argv[])
        
         if(i == 0) 
         {
-            clist_ins_next(&clist, NULL, data);
+            if(clist_ins_next(&clist, NULL, data) != 0) return 1;
             node = clist_head(&clist);
             continue;
         }
 
         node = clist_next(node);
 
-        clist_ins_next(&clist, node, data);
+        if(clist_ins_next(&clist, node, data) != 0) return 1;
 
     }
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
         node = clist_next(node);
     }
 
-    clist_rem_next(&clist, node, (void**)data);
+    if(clist_rem_next(&clist, node, (void**)data) != 0) return 1;
 
     print_clist(&clist);
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
         node = clist_next(node);
     }
 
-    clist_rem_next(&clist, node, (void**)data);
+    if(clist_rem_next(&clist, node, (void**)data) != 0) return 1;
 
     print_clist(&clist);
     
@@ -123,14 +123,54 @@ int main(int argc, char *argv[])
         node = clist_next(node);
     }
 
-    clist_ins_next(&clist, node, data);
+    if(clist_ins_next(&clist, node, data) != 0) return 1;
 
-    fprintf(stdout, "Anadiendo el primer numero de cuenta antes de la cabeza:\nNodo[%03d] = %d, %p -> %p\n", i, *data, node, node->next);
+    fprintf(stdout, "Anadiendo el primer numero de cuenta antes de la cabeza:\nNodo[%03d] = %d, %p -> %p\n", i+1, *data, node, node->next);
 
     print_clist(&clist);
     
+    //Insertando 4 nodo. Que? No se. En el cuarto nodo? Tampoco lo se
+    node = clist_head(&clist);
 
+    for (i = 0; i < 2; i++)
+    {
+        node = clist_next(node);
+    }
 
+    if((data = malloc(sizeof(int))) == NULL) return 1;
+
+    *data = 42069;
+
+    if(clist_ins_next(&clist, node, data) != 0) return 1;
+
+    fprintf(stdout, "Insertando cuarto nodo:\nNodo[%03d] = %d, %p -> %p\n", i+1, *data, node, node->next);
+    
+    print_clist(&clist);
+
+    //Insertando la suma de la sumatoria del primer numero de cuenta mas el segundo numero de cuenta. Donde? no lo se, a la mitad
+    i = 0;
+    while (nc[i] != '\0')
+    {
+        s += (nc[i] - '0');
+        i++;
+    }
+
+    if((data = malloc(sizeof(int))) == NULL) return 1;
+
+    *data = s + atoi(nc2);
+
+    node = clist_head(&clist);
+
+    for (i = 0; i < (clist_size(&clist) / 2) - 1; i++)
+    {
+        node = clist_next(node);
+    }
+    
+    if(clist_ins_next(&clist, node, data) != 0) return 1;
+
+    fprintf(stdout, "Insertando la suma de la sumatoria del primer numero de cuenta mas el segundo numero de cuenta a la mitad:\nNodo[%03d] = %d, %p -> %p\n", i+1, *data, node, node->next);
+    
+    print_clist(&clist);
 
     clist_destroy(&clist);
     
