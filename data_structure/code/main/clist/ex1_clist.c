@@ -33,12 +33,18 @@ static void print_clist(const CList *clist)
     return;
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
     CList clist;
     CListNode *node;
 
+    char *nc, *nc2;
     int *data, i;
+
+    if(argc < 3) return 1;
+
+    nc = argv[1];
+    nc2 = argv[2];
 
     //Lista Inicializada
     clist_init(&clist, free);
@@ -58,8 +64,6 @@ int main(int argc, char const *argv[])
             continue;
         }
 
-        //print_clist(&clist);
-
         node = clist_next(node);
 
         clist_ins_next(&clist, node, data);
@@ -70,10 +74,10 @@ int main(int argc, char const *argv[])
 
     //Removiendo cabeza de la lista
     node = clist_head(&clist);
-
     data = clist_data(node);
+    i = 0;
 
-    fprintf(stdout, "Removiendo cabeza de la lista:\nCabeza[0] = %d, %p -> %p\n", *data, node, node->next);
+    fprintf(stdout, "Removiendo cabeza de la lista:\nCabeza[%03d] = %d, %p -> %p\n", i, *data, node, node->next);
 
     for (i = 0; i < clist_size(&clist) - 1; i++)
     {
@@ -83,8 +87,48 @@ int main(int argc, char const *argv[])
     clist_rem_next(&clist, node, (void**)data);
 
     print_clist(&clist);
-    
 
+    //Removiendo el cuarto nodo
+    node = clist_head(&clist);
+
+    for (i = 0; i < 3; i++)
+    {
+        node = clist_next(node);
+    }
+
+    data = clist_data(node);
+
+    fprintf(stdout, "Removiendo el cuarto nodo:\nNodo[%03d] = %d, %p -> %p\n", i, *data, node, node->next);
+
+    node = clist_head(&clist);
+    for (i = 0; i < 2; i++)
+    {
+        node = clist_next(node);
+    }
+
+    clist_rem_next(&clist, node, (void**)data);
+
+    print_clist(&clist);
+    
+    //Insertando numero de cuenta antes de la cabeza
+
+    node = clist_head(&clist);
+
+    if((data = malloc(sizeof(int))) == NULL) return 1;
+
+    *data = atoi(nc);
+
+    for (i = 0; i < clist_size(&clist) - 1; i++)
+    {
+        node = clist_next(node);
+    }
+
+    clist_ins_next(&clist, node, data);
+
+    fprintf(stdout, "Anadiendo el primer numero de cuenta antes de la cabeza:\nNodo[%03d] = %d, %p -> %p\n", i, *data, node, node->next);
+
+    print_clist(&clist);
+    
 
 
 
