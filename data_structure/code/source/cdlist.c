@@ -31,7 +31,7 @@ void cdlist_destroy (CDList *list) {
 /*
     Insert next node at the cdlist
 */
-int cdlist_ins_prev(CDList *list, CDListNode *node, const void *data) {
+int cdlist_ins_next (CDList *list, CDListNode *node, const void *data) {
     CDListNode *new_node;
 
     if ((new_node = (CDListNode *)malloc(sizeof(CDListNode))) == NULL)
