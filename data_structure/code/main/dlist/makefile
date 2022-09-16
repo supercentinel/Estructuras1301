@@ -20,7 +20,11 @@ SRC:= $(patsubst %,$(SOURCE)/%,$(_SRC))
 OBJ:= $(SRC:.c=.o) $(_MAIN:.c=.o)
 
 # Program name
-EXE:= dlist.o 
+ifeq ($(OS), Windows_NT)
+	EXE:= dlist.exe
+else
+	EXE:= dlist.o
+endif
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
