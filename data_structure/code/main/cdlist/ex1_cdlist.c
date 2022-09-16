@@ -42,12 +42,13 @@ int main(int argc, char const *argv[])
     int *data, i;
 
     cdlist_init(&cdlist, free);
+    printf("Lista inicializada\n");
+    print_cdlist(&cdlist);
 
     //LLenando la lista
-    node = cdlist_head(&cdlist);
     for (i = 0; i < 10; i++)
     {
-        if((data = (int*)malloc(sizeof(int))) == NULL)
+        if((data = (int *)malloc(sizeof(int))) == NULL)
             return 1;
         
         *data = i;
@@ -55,6 +56,7 @@ int main(int argc, char const *argv[])
         if(i == 0)
         {
             if(cdlist_ins_next(&cdlist, NULL, data) != 0) return 1;
+            node = cdlist_head(&cdlist);
             continue;
         }
 
@@ -66,7 +68,6 @@ int main(int argc, char const *argv[])
     print_cdlist(&cdlist);
 
     cdlist_destroy(&cdlist);
-
 
     return 0;
 }
