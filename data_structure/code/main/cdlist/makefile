@@ -14,7 +14,7 @@ CFLAGS:= -I $(INCLUDE)
 _DEPS:= cdlist.h
 DEPS:= $(patsubst %,$(INCLUDE)/%,$(_DEPS))
 
-_MAIN:= ex1_clist.c
+_MAIN:= ex1_cdlist.c
 _SRC:= cdlist.c
 SRC:= $(patsubst %,$(SOURCE)/%,$(_SRC))
 OBJ:= $(SRC:.c=.o) $(_MAIN:.c=.o)

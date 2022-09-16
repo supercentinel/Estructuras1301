@@ -85,7 +85,7 @@ int cdlist_ins_prev (CDList *list, CDListNode *node, const void *data) {
     Remove node at the cldist
     **pending
 */
-int dlist_remove (CDList *list, CDListNode *node, void **data) {
+int cdlist_remove (CDList *list, CDListNode *node, void **data) {
 
     //List is empty
     if (node == NULL && cdlist_size(list) == 0)
