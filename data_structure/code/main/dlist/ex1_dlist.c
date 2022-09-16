@@ -92,28 +92,6 @@ int main(int argc, char *argv[])
 
     print_dlist(&dlist);
 
-    /*
-    node = dlist_head(&dlist);
-
-    for(i = 0; i < 3; i++)
-        node = dlist_next(node);    
-    data = dlist_data(node);
-
-    fprintf(stdout, "\nInsertando despues:\nNodo[%03d] = %03d, %p <- %p -> %p\n", i, *data, node->prev, node, node->next);
-
-    if((data2 = (int *)malloc(sizeof(int))) == NULL)
-        return 1;
-
-    *data2 = 377;
-
-    if(dlist_ins_next(&dlist, node, data2) != 0)
-        return 1;
-    
-    print_dlist(&dlist);
-
-    data2 = NULL;
-    free(data2); 
-    */
     //Insertando primer numero de cuenta a la mitad de la lista
     node = dlist_head(&dlist);
 
@@ -187,7 +165,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < 6; i++)
         node = dlist_next(node);
     data = dlist_data(node);
-    
+
 
     fprintf(stdout, "\nRemoviendo el septimo y quinto nodo:\nNodo[%03d] = %03d, %p <- %p -> %p\n", i, *data, node->prev, node, node->next);
     
@@ -207,31 +185,6 @@ int main(int argc, char *argv[])
 
     print_dlist(&dlist);
     
-
-    //insertando 
-    /*dlist_size(&dlist);
-    
-    node = dlist_head(&dlist);
-
-
-    /*
-
-    i = 0;
-    s2 = 0;
-
-    while (nc2[i] != '\0')
-    {
-        s2 += (nc2[i] - '0');
-        i++; 
-    }
-
-    printf("Insertando ");
-
-    printf("\nLa sumatoria de %s es %d\n\n", nc2, s2);
-    */
-
-    
-
     dlist_destroy(&dlist);
 
     return 0;

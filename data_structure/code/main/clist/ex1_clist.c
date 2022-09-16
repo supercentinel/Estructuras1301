@@ -174,7 +174,5 @@ int main(int argc, char *argv[])
 
     clist_destroy(&clist);
     
-
-
     return 0;
 }
