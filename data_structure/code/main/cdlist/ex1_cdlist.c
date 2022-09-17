@@ -67,6 +67,36 @@ int main(int argc, char const *argv[])
     
     print_cdlist(&cdlist);
 
+    //removiendo un elemento de la lista
+    node = cdlist_head(&cdlist);
+
+    for (i = 0; i < 6; i++)
+    {
+        node = cdlist_next(node);
+    }
+
+    cdlist_remove(&cdlist, node, (void **)&data);
+
+    print_cdlist(&cdlist);
+
+    //anadiendo antes de la cabeza
+    node = cdlist_head(&cdlist);
+
+    for (i = 0; i < 2; i++)
+    {
+        node = cdlist_next(node);
+    }
+    
+
+    if((data = (int *)malloc(sizeof(int))) == NULL)
+            return 1;
+
+    *data = 999;
+
+    if(cdlist_ins_prev(&cdlist, node, data) != 0) return 1;
+
+    print_cdlist(&cdlist);
+
     cdlist_destroy(&cdlist);
 
     return 0;

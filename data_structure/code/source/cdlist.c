@@ -34,6 +34,9 @@ void cdlist_destroy (CDList *list) {
 int cdlist_ins_next (CDList *list, CDListNode *node, const void *data) {
     CDListNode *new_node;
 
+    if (node == NULL && cdlist_size(list) != 0)
+        return -1;
+
     if ((new_node = (CDListNode *)malloc(sizeof(CDListNode))) == NULL)
         return -1;
     
@@ -63,6 +66,12 @@ int cdlist_ins_next (CDList *list, CDListNode *node, const void *data) {
 int cdlist_ins_prev (CDList *list, CDListNode *node, const void *data) {
     CDListNode *new_node;
 
+    if (node == NULL && cdlist_size(list) != 0)
+        return -1;
+
+    if ((new_node = (CDListNode *)malloc(sizeof(CDListNode))) == NULL)
+        return -1;
+
     //The list is empty
     if(cdlist_size(list) == 0){
         new_node->next = new_node;
@@ -73,6 +82,7 @@ int cdlist_ins_prev (CDList *list, CDListNode *node, const void *data) {
         new_node->prev = node->prev;
 
         node->prev->next = new_node;
+
         node->prev = new_node;
     }
 
