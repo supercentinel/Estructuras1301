@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_STR 100
 
 #include "list.h"
 #include "stack.h"
@@ -36,25 +35,25 @@ int filtrar(char c)
     switch (c)
     {
     case 37:
-        return 1;
+        return 0;
     break;
     case 40:
-        return 1;
+        return 0;
     break;
     case 41:
-        return 1;
+        return 0;
     break;
     case 42:
-        return 1;
+        return 0;
     break;
     case 43:
-        return 1;
+        return 0;
     break;
     case 45:
-        return 1;
+        return 0;
     break;
     case 47:
-        return 1;
+        return 0;
     break;
     case 48:
         return 1;
@@ -87,7 +86,7 @@ int filtrar(char c)
         return 1;
     break;
     case 94:
-        return 1;
+        return 0;
     break;
     default:
         return -1;
@@ -102,15 +101,11 @@ int insert(List *infix, char *ifs)
     char *data;
     ListNode *node;
 
-    printf("saflkj\n");
-
     node = list_head(infix);
 
     for (i = 0; i < sl; i++)
     {
         if(filtrar(ifs[i]) == -1) return -1;
-        
-        printf("%d", sl);
 
         if((data = (char *)malloc(sizeof(char))) == NULL) return -1;
 
@@ -123,11 +118,43 @@ int insert(List *infix, char *ifs)
     
 }
 
+int infixToPosfix(List *infix, List *posfix)
+{
+    int i = 0, iflen = list_size(infix);
+
+    char *data;
+
+    Stack stack;
+    ListNode *nodeif, *nodepf;
+
+    stack_init(&stack, free);
+
+    nodeif = list_head(infix);
+    nodepf = list_head(posfix);
+
+    for (i = 0; i < iflen; i++)
+    {
+        if((data = (char *)malloc(sizeof(char))) == NULL) return -1;
+
+        data = list_data(nodeif);
+
+        if(filtrar(data) == 1)
+        {
+            if(list_ins_next(posfix, NULL, data) != 0) return -1;
+        }else
+        {
+            if((stack_push(&stack, data)) != 0) return -1;
+        }
+
+    }
+    
+    stack_destroy(&stack);
+
+}
+
 int main(int argc, char *argv[])
 {
-    printf("ASFjk");
-
-    
+   
     List infix;
 
     list_init(&infix, free);
