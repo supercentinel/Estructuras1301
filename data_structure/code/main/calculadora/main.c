@@ -30,6 +30,9 @@ static void print_list (const List *list) {
    return;
 }
 
+/*
+refactorizar para que, en caso de un operador tenga ponderacia segun la jerarquia de operadores
+*/
 int filtrar(char c)
 {
     switch (c)
@@ -111,9 +114,16 @@ int insert(List *infix, char *ifs)
 
         *data = ifs[i];
 
+        if(list_size(infix) == 0)
+        {
+            if(list_ins_next(infix, NULL, data) != 0) return -1;
+            node = list_head(infix);
+            continue;
+        }
 
-        if(list_ins_next(infix, NULL, data) != 0) return 0;
+        if(list_ins_next(infix, node, data) != 0) return -1;
 
+        node = list_next(node);
     }
     
 }
