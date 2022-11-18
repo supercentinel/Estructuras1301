@@ -37,59 +37,69 @@ int filtrar(char c)
 {
     switch (c)
     {
+    //mod
     case 37:
-        return 0;
+        return 2;
     break;
+    //parentesis(
     case 40:
-        return 0;
+        return 4;
     break;
+    //parentesis)
     case 41:
-        return 0;
+        return 5;
     break;
+    //*
     case 42:
-        return 0;
+        return 2;
     break;
+    //+
     case 43:
-        return 0;
-    break;
-    case 45:
-        return 0;
-    break;
-    case 47:
-        return 0;
-    break;
-    case 48:
         return 1;
+    break;
+    //-
+    case 45:
+        return 1;
+    break;
+    // a/b
+    case 47:
+        return 2;
+    break;
+    //digitos
+    case 48:
+        return 0;
     break;
     case 49:
-        return 1;
+        return 0;
     break;
     case 50:
-        return 1;
+        return 0;
     break;
     case 51:
-        return 1;
+        return 0;
     break;
     case 52:
-        return 1;
+        return 0;
     break;
     case 53:
-        return 1;
+        return 0;
     break;
     case 54:
-        return 1;
+        return 0;
     break;
     case 55:
-        return 1;
+        return 0;
     break;
     case 56:
-        return 1;
+        return 0;
     break;
     case 57:
-        return 1;
-    break;
-    case 94:
         return 0;
+    break;
+    //digitos
+    //pow
+    case 94:
+        return 3;
     break;
     default:
         return -1;
