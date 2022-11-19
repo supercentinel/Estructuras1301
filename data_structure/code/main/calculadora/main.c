@@ -17,7 +17,7 @@ static void print_list (const List *list) {
 
     while (1) {
         data = list_data(node);
-        fprintf(stdout, "list.node[%03d]=%03c, %p -> %p \n", i, *data, node, node->next);
+        fprintf(stdout, "list.node[%03d]= %s, %p -> %p \n", i, data, node, node->next);
 
         i++;
 
@@ -30,9 +30,7 @@ static void print_list (const List *list) {
    return;
 }
 
-/*
-refactorizar para que, en caso de un operador tenga ponderacia segun la jerarquia de operadores
-*/
+
 int filtrar(char c)
 {
     switch (c)
@@ -110,37 +108,67 @@ int filtrar(char c)
 
 int insert(List *infix, char *ifs)
 {
-    int i, sl = strlen(ifs);
-    char *data;
+    int i, f = 0, sl = strlen(ifs);
+    char *data, temp[2];
     ListNode *node;
 
-    node = list_head(infix);
-
+    //iteramos sobre la entrada ifs
     for (i = 0; i < sl; i++)
     {
-        if(filtrar(ifs[i]) == -1) return -1;
-
-        if((data = (char *)malloc(sizeof(char))) == NULL) return -1;
-
-        *data = ifs[i];
-
-        if(list_size(infix) == 0)
+        //si no es ni digito ni operador se corta;
+        if(filtrar(ifs[i]) == -1);
+        //es un digito
+        if(filtrar(ifs[i]) == 0)
         {
-            if(list_ins_next(infix, NULL, data) != 0) return -1;
-            node = list_head(infix);
-            continue;
+            if (f == 0)
+            {
+                if((data = (char *)malloc(sizeof(char) * 2)) == NULL) return -1;
+                *data = ifs[i];
+                data[1] = '\0';
+            }
+            
+            f = 1;
+            //si el siguiente caracter es un operador o el nulo entonces se inserta en la lista
+            if ((filtrar(ifs[i+1]) > 0) || (ifs[i+1] == '\0'))
+            {
+                f = 0;
+                //si es el primer elemento
+                if (list_size(infix) == 0)
+                {
+                    if(list_ins_next(infix, NULL, data) != 0) return -1;
+                    continue;
+                }
+
+                node = list_tail(infix);
+
+                if(list_ins_next(infix, node, data) != 0) return -1;
+            }else// si no, es otro digito. En tal caso concatenar
+            {
+                if((data = (char *)realloc(data, sizeof(char) * strlen(data))) == NULL) return -1;
+                
+                temp[0] = ifs[i+1];
+
+                strcat(data, temp);
+                continue;
+            }
+
+        }else//si no lo es es un operador o parentesis
+        {
+            if((data = (char *)malloc(sizeof(char) * 2)) == NULL) return -1;
+
+            *data = ifs[i];
+            data[1] = '\0';
+            node = list_tail(infix);
+
+            if(list_ins_next(infix, node, data) != 0) return -1;
         }
-
-        if(list_ins_next(infix, node, data) != 0) return -1;
-
-        node = list_next(node);
     }
-    
+
 }
 
 int infixToPosfix(List *infix, List *posfix)
 {
-    int i = 0, iflen = list_size(infix);
+    int i, iflen = list_size(infix);
 
     char *data;
 
@@ -158,13 +186,15 @@ int infixToPosfix(List *infix, List *posfix)
 
         data = list_data(nodeif);
 
-        if(filtrar(data) == 1)
+        if(filtrar(*data) == 0)
         {
             if(list_ins_next(posfix, NULL, data) != 0) return -1;
         }else
         {
             if((stack_push(&stack, data)) != 0) return -1;
         }
+        
+        nodeif = list_next(nodeif); 
 
     }
     
@@ -175,14 +205,26 @@ int infixToPosfix(List *infix, List *posfix)
 int main(int argc, char *argv[])
 {
    
-    List infix;
+    List infix, posfix;
 
     list_init(&infix, free);
+    list_init(&posfix, free);
+
+
 
     insert(&infix, argv[1]);
+    fprintf(stdout, "Lista en infijia\n");
     print_list(&infix);
+
+    //infixToPosfix(&infix, &posfix);
+
+    //fprintf(stdin, "\nLista en posfija\n");
+
+    //print_list(&posfix);
+
     
     list_destroy(&infix);
+    list_destroy(&posfix);
 
     return 0;
 }
