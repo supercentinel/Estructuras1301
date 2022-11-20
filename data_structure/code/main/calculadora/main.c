@@ -168,35 +168,79 @@ int insert(List *infix, char *ifs)
 
 int infixToPosfix(List *infix, List *posfix)
 {
-    int i, iflen = list_size(infix);
+    int i, j, f, fp, iflen = list_size(infix);
 
-    char *data;
+    char *data, *datapf;
 
     Stack stack;
-    ListNode *nodeif, *nodepf;
+    ListNode *node;
 
     stack_init(&stack, free);
 
-    nodeif = list_head(infix);
-    nodepf = list_head(posfix);
+    node = list_head(infix);
 
     for (i = 0; i < iflen; i++)
     {
-        if((data = (char *)malloc(sizeof(char))) == NULL) return -1;
+        data = list_data(node);
 
-        data = list_data(nodeif);
+        if((datapf = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
 
-        if(filtrar(*data) == 0)
+        strcpy(datapf, data);
+
+        //printf("size = %d, is a number = %d\n", strlen(datapf), filtrar(datapf[0]));
+
+        f = filtrar(datapf[0]);
+
+        if(f == 0)
         {
-            if(list_ins_next(posfix, NULL, data) != 0) return -1;
-        }else
-        {
-            if((stack_push(&stack, data)) != 0) return -1;
+            if(list_ins_next(posfix, list_tail(posfix), datapf) != 0) return -1;
         }
-        
-        nodeif = list_next(nodeif); 
+        else
+        {
+            /*
+            if(f > fp)
+            {
+                printf("%d\n", f);
+                data = stack_peek(&stack);
+                printf("%s\n", data);
+                /*
+                if((datapf = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
+
+                strcpy(datapf, data);
+
+                if(list_ins_next(posfix, NULL, datapf) != 0) return -1;
+                
+            }*/
+
+            if((stack_push(&stack, datapf)) != 0) return -1;
+            fp = f;
+        }
+
+
+        node = list_next(node); 
 
     }
+
+   while (stack_size(&stack) > 0)
+   {
+        printf("%d\n", stack_size(&stack));
+        if(stack_pop(&stack, (void **)&data) == 0)
+        {
+            printf("%s\n", data);
+
+            if((datapf = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
+
+            strcpy(datapf, data);
+
+            if(list_ins_next(posfix, list_tail(posfix), datapf) != 0) return -1;
+
+            free(data);
+        }
+        else
+        {
+            return -1;
+        }
+   }
     
     stack_destroy(&stack);
 
@@ -216,11 +260,11 @@ int main(int argc, char *argv[])
     fprintf(stdout, "Lista en infijia\n");
     print_list(&infix);
 
-    //infixToPosfix(&infix, &posfix);
+    infixToPosfix(&infix, &posfix);
 
-    //fprintf(stdin, "\nLista en posfija\n");
+    fprintf(stdin, "\nLista en posfija\n");
 
-    //print_list(&posfix);
+    print_list(&posfix);
 
     
     list_destroy(&infix);
