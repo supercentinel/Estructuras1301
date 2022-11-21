@@ -238,7 +238,8 @@ int infixToPosfix(List *infix, List *posfix)
             node = list_next(node);
             //printf("fp value = %d\n", fp);
             //reset a la precedencia
-            fp = 0;
+            dataAux = stack_peek(&stack);
+            fp = filtrar(dataAux[0]);
             continue;
         }
 
