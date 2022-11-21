@@ -165,11 +165,11 @@ int insert(List *infix, char *ifs)
 
 }
 
-int infixToPosfix(List *infix, List *posfix)
+int infixToPosfix(List *infix, List *posfix, int wachar)
 {
     int i, f, fp, iflen = list_size(infix);
 
-    char *data, *datapf, *dataAux, dataAux2[1];
+    char *data, *datapf, *dataAux;
 
     Stack stack;
     ListNode *node;
@@ -192,7 +192,7 @@ int infixToPosfix(List *infix, List *posfix)
         //si es un parentesis( se introduce en el stack
         if(f == 4)
         {
-            printf("parentesis en(: %d\n", i);
+            if(wachar == 1) printf("parentesis en [%d]: (\n", i);
             if((stack_push(&stack, datapf)) != 0) return -1;
             node = list_next(node);
             //reset a la precedencia
@@ -204,10 +204,9 @@ int infixToPosfix(List *infix, List *posfix)
         //cuando hay un parentesis) cerrando
         if(f == 5)
         {
-            printf("parentesis en): %d\n", i);
+            if(wachar == 1) printf("parentesis en [%d]: )\n", i);
             data = stack_peek(&stack);
-            printf("popping\n");
-            printf("data = %s\n", data);
+            if(wachar == 1) printf("popping\n");
 
             //se hace un pop al stack hasta cerrar los parentesis
             do
@@ -224,6 +223,8 @@ int infixToPosfix(List *infix, List *posfix)
 
                     strcpy(datapf, data);
 
+                    if(wachar == 1) printf("data = %s\n", datapf);
+
                     if(filtrar(datapf[0]) != 4)
                         if(list_ins_next(posfix, list_tail(posfix), datapf) != 0) return -1;
 
@@ -234,6 +235,7 @@ int infixToPosfix(List *infix, List *posfix)
                     return -1;
                 }
             }while (1);
+            if(wachar == 1) printf("end of popping\n");
             //y se continua con la iteracion
             node = list_next(node);
             //printf("fp value = %d\n", fp);
@@ -246,13 +248,13 @@ int infixToPosfix(List *infix, List *posfix)
         //si es un numero se va a la lista
         if(f == 0)
         {
-            printf("digito en: %d\n", i);
+            if(wachar == 1) printf("digito en [%d]: %s\n", i, datapf);
             if(list_ins_next(posfix, list_tail(posfix), datapf) != 0) return -1;
         }
         //en caso contrario es un operador y va al stack
         else
         {
-            printf("operador en: %d\n", i);
+            if(wachar == 1) printf("operador en [%d]: %s\n", i, datapf);
             //printf("fp value = %d\n", fp);
 
             //si ya hay elementos en el stack se comprueba que la precedencia
@@ -260,7 +262,7 @@ int infixToPosfix(List *infix, List *posfix)
             {   
                 if(stack_pop(&stack, (void **)&data) == 0)
                 {
-                    printf("pop en: %d\n", i);
+                    if(wachar == 1) printf("pop en [%d]: %s\n", i, data);
                     if((dataAux = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
 
                     strcpy(dataAux, data);
@@ -276,7 +278,7 @@ int infixToPosfix(List *infix, List *posfix)
                             fp = filtrar(data[0]);
                             if (f <= fp)
                             {
-                                printf("pop en: %d\n", i);
+                                if(wachar == 1) printf("pop en [%d]: %s\n", i, data);
                                 if((dataAux = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
                                 strcpy(dataAux, data);
 
@@ -319,6 +321,8 @@ int infixToPosfix(List *infix, List *posfix)
 
             strcpy(datapf, data);
 
+            if(wachar == 1) printf("pop en [%d]: %s\n", i, datapf);
+
             if(list_ins_next(posfix, list_tail(posfix), datapf) != 0) return -1;
 
             free(data);
@@ -334,7 +338,7 @@ int infixToPosfix(List *infix, List *posfix)
 
 int main(int argc, char *argv[])
 {
-   
+    int wachar = 1;
     List infix, posfix;
 
     list_init(&infix, free);
@@ -346,7 +350,7 @@ int main(int argc, char *argv[])
     fprintf(stdout, "Lista en infijia\n");
     print_list(&infix);
 
-    infixToPosfix(&infix, &posfix);
+    infixToPosfix(&infix, &posfix, wachar);
 
     fprintf(stdin, "\nLista en posfija\n");
 
