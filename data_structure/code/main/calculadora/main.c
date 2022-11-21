@@ -169,7 +169,7 @@ int infixToPosfix(List *infix, List *posfix)
 {
     int i, f, fp, iflen = list_size(infix);
 
-    char *data, *datapf, *dataAux;
+    char *data, *datapf, *dataAux, dataAux2[1];
 
     Stack stack;
     ListNode *node;
@@ -268,6 +268,32 @@ int infixToPosfix(List *infix, List *posfix)
                     if(list_ins_next(posfix, list_tail(posfix), dataAux) != 0) return -1;
 
                     free(data);
+
+                    if(stack_size(&stack) != 0)
+                    {
+                        if(stack_pop(&stack, (void **)&data) == 0)
+                        {
+                            fp = filtrar(data[0]);
+                            if (f <= fp)
+                            {
+                                printf("pop en: %d\n", i);
+                                if((dataAux = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
+                                strcpy(dataAux, data);
+
+                                if(list_ins_next(posfix, list_tail(posfix), dataAux) != 0) return -1;
+
+                                free(data);
+                            }
+                            else
+                            {
+                                if((stack_push(&stack, data)) != 0) return -1;
+                            }
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
                 }
                 else
                 {
