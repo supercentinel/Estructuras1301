@@ -306,7 +306,7 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
             fp = f;
             if((stack_push(&stack, datapf)) != 0) return -1;
             data = stack_peek(&stack);
-            printf("pushed: %s\n", data);
+            if(wachar == 1) printf("pushed: %s\n", data);
         }
 
         node = list_next(node);
@@ -338,7 +338,7 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
 
 int main(int argc, char *argv[])
 {
-    int wachar = 1;
+    int wachar = 0;
     List infix, posfix;
 
     list_init(&infix, free);
