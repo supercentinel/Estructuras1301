@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "list.h"
 #include "stack.h"
@@ -336,6 +337,167 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
     stack_destroy(&stack);
 }
 
+int evaluar(List *posfix)
+{
+    int a, b, c, cD, i, f, pflen = list_size(posfix);
+
+    char *data, *dataS;
+
+    Stack stack;
+    ListNode *node;
+
+    stack_init(&stack, free);
+
+    node = list_head(posfix);
+
+    //itera sobre la lista posfija
+    for ( i = 0; i < pflen; i++)
+    {
+        data = list_data(node);
+
+        if((dataS = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
+
+        strcpy(dataS, data);
+
+        f = filtrar(dataS[0]);
+
+        switch (f)
+        {
+        case 0:
+            if((stack_push(&stack, dataS)) != 0) return -1;
+        break;
+        default:
+
+            switch (dataS[0])
+            {
+            case '+':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = a + b;
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            case '-':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = a - b;
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            case '*':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = a * b;
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            case '%':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = a % b;
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            case '/':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = a / b;
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            case '^':
+                if(stack_pop(&stack, (void **)&data) == 0);
+                b = atoi(data);
+                if(stack_pop(&stack, (void **)&data) == 0);
+                a = atoi(data);
+
+                c = pow(a, b);
+
+                if(c != 0)
+                    cD = log10(abs(c)) + 1;
+                else
+                    cD = 1;
+
+                if((data = (char *)malloc(sizeof(char) * cD)) == NULL) return -1;
+                sprintf(data, "%d", c);
+
+                if((stack_push(&stack, data)) != 0) return -1;
+            break;
+            
+            default:
+            break;
+            }
+
+        break;
+        }
+        node = list_next(node);
+    }
+
+    if(stack_pop(&stack, (void **)&data) == 0);
+
+    c = atoi(data);
+    
+    return c;
+
+    stack_destroy(&stack);
+
+}
+
 int main(int argc, char *argv[])
 {
     int wachar = 0;
@@ -355,6 +517,8 @@ int main(int argc, char *argv[])
     fprintf(stdin, "\nLista en posfija\n");
 
     print_list(&posfix);
+
+    printf("\nResultado = %d\n", evaluar(&posfix));
 
     
     list_destroy(&infix);
