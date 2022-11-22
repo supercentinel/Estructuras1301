@@ -543,17 +543,17 @@ void saveToCSV(List *infix, List *posfix, int resultado)
 void printH()
 {
     FILE *ptf;
+    char c;
 
     ptf = fopen("historial.csv", "r");
 
     //brain juice is out, check later. Use the same code for string here but for files
-    while (EOF)
+    do
     {
-        /* code */
-    }
+        c = fgetc(ptf);
+        printf("%c", c);
+    }while (c != EOF);
     
-
-
     fclose(ptf);
 }
 
@@ -583,6 +583,7 @@ int main(int argc, char *argv[])
     printf("\nResultado = %d\n", r);
 
     saveToCSV(&infix, &posfix, r);
+    printH();
 
     
     list_destroy(&infix);
