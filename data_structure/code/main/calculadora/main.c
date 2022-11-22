@@ -498,8 +498,51 @@ int evaluar(List *posfix)
 
 }
 
+void saveToCSV(List *infix, List *posfix, int resultado)
+{
+    int i, ls;
+
+    ListNode *node;
+    FILE *ptf;
+
+    char *data, *dataAlt;
+    
+    ptf = fopen("historial.csv", "a");
+
+    node = list_head(infix);
+    ls = list_size(infix);
+
+    for ( i = 0; i < ls; i++)
+    {
+        data = list_data(node);
+
+        fprintf(ptf, "%s", data);
+        
+        node = list_next(node);
+    }
+
+    fprintf(ptf, ",");
+
+    node = list_head(posfix);
+    ls = list_size(posfix);
+
+    for ( i = 0; i < ls; i++)
+    {
+        data = list_data(node);
+
+        fprintf(ptf, "%s ", data);
+        
+        node = list_next(node);
+    }
+    
+    fprintf(ptf, ",%d\n", resultado);
+
+    fclose(ptf);
+}
+
 int main(int argc, char *argv[])
 {
+    int r;
     int wachar = 0;
     List infix, posfix;
 
@@ -518,7 +561,11 @@ int main(int argc, char *argv[])
 
     print_list(&posfix);
 
-    printf("\nResultado = %d\n", evaluar(&posfix));
+    r = evaluar(&posfix);
+
+    printf("\nResultado = %d\n", r);
+
+    saveToCSV(&infix, &posfix, r);
 
     
     list_destroy(&infix);
