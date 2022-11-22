@@ -540,6 +540,23 @@ void saveToCSV(List *infix, List *posfix, int resultado)
     fclose(ptf);
 }
 
+void printH()
+{
+    FILE *ptf;
+
+    ptf = fopen("historial.csv", "r");
+
+    //brain juice is out, check later. Use the same code for string here but for files
+    while (EOF)
+    {
+        /* code */
+    }
+    
+
+
+    fclose(ptf);
+}
+
 int main(int argc, char *argv[])
 {
     int r;
