@@ -217,6 +217,7 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
                     //aqui el parentesis cierra y termina el loop
                     if(filtrar(data[0]) == 4)
                     {
+                        printf("temp %s = (", data);
                         free(data);
                         break;
                     }
@@ -266,7 +267,7 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
             //printf("fp value = %d\n", fp);
 
             //si ya hay elementos en el stack se comprueba que la precedencia
-            if(stack_size(&stack) > 0 && f <= fp)
+            if(stack_size(&stack) > 0 && f <= fp && (fp != 4 && fp != 5))
             {   
                 if(stack_pop(&stack, (void **)&data) == 0)
                 {
@@ -284,7 +285,7 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
                         if(stack_pop(&stack, (void **)&data) == 0)
                         {
                             fp = filtrar(data[0]);
-                            if (f <= fp)
+                            if (f <= fp && (fp != 4 && fp != 5))
                             {
                                 if(wachar == 1) printf("pop en [%d]: %s\n", i, data);
                                 if((dataAux = (char *)malloc(sizeof(char) * strlen(data))) == NULL) return -1;
@@ -585,9 +586,9 @@ int main(int argc, char *argv[])
         print_list(&infix);
         infixToPosfix(&infix, &posfix, wachar);
         print_list(&posfix);
-        //r = evaluar(&posfix);
+        r = evaluar(&posfix);
 
-        //printf("Resultado = %d\n", r);
+        printf("Resultado = %d\n", r);
     }
     else if(strcmp(argv[1], "-h") == 0) printH();
 
