@@ -568,7 +568,7 @@ void printH()
 int main(int argc, char *argv[])
 {
     int r;
-    int wachar = 1;
+    int wachar = 0;
     List infix, posfix;
 
     list_init(&infix, free);
@@ -580,13 +580,24 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if(filtrar(argv[1][0]) == 0 || filtrar(argv[1][0]) == 4)
+    if (argc > 2)
+    {
+        if (strcmp(argv[2], "-w") == 0) wachar = 1;
+    }
+    
+    
+
+    if(filtrar(argv[1][0]) != -1)
     {
         insert(&infix, argv[1]);
-        print_list(&infix);
         infixToPosfix(&infix, &posfix, wachar);
-        print_list(&posfix);
+        
+        if(wachar == 1) print_list(&infix);
+        infixToPosfix(&infix, &posfix, wachar);
+        if(wachar == 1) print_list(&posfix);
+        
         r = evaluar(&posfix);
+        saveToCSV(&infix, &posfix, r);
 
         printf("Resultado = %d\n", r);
     }
