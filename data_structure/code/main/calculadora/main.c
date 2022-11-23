@@ -206,11 +206,11 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
         if(f == 5)
         {
             if(wachar == 1) printf("parentesis en [%d]: )\n", i);
-            data = stack_peek(&stack);
+            //data = stack_peek(&stack);
             if(wachar == 1) printf("popping\n");
 
             //se hace un pop al stack hasta cerrar los parentesis
-            do
+            while(1)
             {
                 if(stack_pop(&stack, (void **)&data) == 0)
                 {
@@ -235,14 +235,21 @@ int infixToPosfix(List *infix, List *posfix, int wachar)
                 {
                     return -1;
                 }
-            }while (1);
+            }
             if(wachar == 1) printf("end of popping\n");
             //y se continua con la iteracion
             node = list_next(node);
             //printf("fp value = %d\n", fp);
             //reset a la precedencia
-            dataAux = stack_peek(&stack);
-            fp = filtrar(dataAux[0]);
+            if(stack_size(&stack) > 0)
+            {
+                dataAux = stack_peek(&stack);
+                fp = filtrar(dataAux[0]);
+            }
+            else
+            {
+                fp = 0; 
+            }
             continue;
         }
 
@@ -560,14 +567,31 @@ void printH()
 int main(int argc, char *argv[])
 {
     int r;
-    int wachar = 0;
+    int wachar = 1;
     List infix, posfix;
 
     list_init(&infix, free);
     list_init(&posfix, free);
 
+    if(argc == 1)
+    {
+        printf("Introduce una operacion infija");
+        return 0;
+    }
 
+    if(filtrar(argv[1][0]) == 0 || filtrar(argv[1][0]) == 4)
+    {
+        insert(&infix, argv[1]);
+        print_list(&infix);
+        infixToPosfix(&infix, &posfix, wachar);
+        print_list(&posfix);
+        //r = evaluar(&posfix);
 
+        //printf("Resultado = %d\n", r);
+    }
+    else if(strcmp(argv[1], "-h") == 0) printH();
+
+    /*
     insert(&infix, argv[1]);
     fprintf(stdout, "Lista en infijia\n");
     print_list(&infix);
@@ -584,6 +608,7 @@ int main(int argc, char *argv[])
 
     saveToCSV(&infix, &posfix, r);
     printH();
+    */
 
     
     list_destroy(&infix);
