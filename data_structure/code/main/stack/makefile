@@ -20,7 +20,7 @@ SRC:= $(patsubst %,$(SOURCE)/%,$(_SRC))
 OBJ:= $(SRC:.c=.o) $(_MAIN:.c=.o)
 
 # Program name
-ifeq($(OS), Windows_NT)
+ifeq ($(OS), Windows_NT)
 	EXE:= stack.exe
 else
 	EXE:= stack.o
