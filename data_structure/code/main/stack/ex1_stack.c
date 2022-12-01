@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
     for ( i = 0; i < elmts; i++)
     {
         if((data = (int *)malloc(sizeof(int))) == NULL) return -1;
-        stack_pop(&stack, (void **)data);
+        stack_pop(&stack, (void **)&data);
 
         printf("popping %d\n", *data);
     }
